@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Journey with Electron</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Journey Testing headline</h1>
+    <textarea id="journal" placeholder="How are you today..."></textarea>
+    <br />
+    <button id="saveBtn">Save</button>
+    <div id="message"></div>
+
+    <script>
+        const saveBtn = document.getElementById('saveBtn');
+        const journal = document.getElementById('journal');
+        const message = document.getElementById('message');
+
+        saveBtn.addEventListener('click', () => {
+            const content = journal.value;
+            window.electronAPI.saveJournal(content);
+        });
+
+        window.electronAPI.onSaveResponse((response) => {
+            if (response.success) {
+                message.style.color = 'green';
+            } else {
+                message.style.color = 'red';
+            }
+
+            message.textContent = response.message;
+
+            setTimeout(() => {
+                message.textContent = '';
+            }, 3000);
+        });
+    </script>
+</body>
+
+</html>
